@@ -9,6 +9,8 @@ Code was tested with Python 2.7 and Python 3.4
 ## Dependencies
 
 [spidev](https://pypi.org/project/spidev/)
+[RPi.GPIO](https://pypi.org/project/RPi.GPIO/)
 
 ***For the example***
+
 [numpy](https://pypi.org/project/numpy/)
