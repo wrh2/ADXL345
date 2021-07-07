@@ -24,7 +24,8 @@ def main():
 
     while 1:
         
-        print('XYZ: %s' % np.int16(my_imu.getXYZ()))
+        #print('XYZ: %s' % np.int16(my_imu.getXYZ()))
+        print('XYZ: %s' % list(my_imu.getXYZ(raw=False)))
 
         time.sleep(.3)
 
