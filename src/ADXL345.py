@@ -211,7 +211,7 @@ class ADXL345:
         This function is used for writing bytes from the ADXL345
         """
 
-        MB = self.__multibyte(d)
+        MB = self.__multibyte(len(d))
         
         msg = (WRITE << RW_SHIFT) | (MB << MB_SHIFT) | addr
 
@@ -259,6 +259,9 @@ class ADXL345:
     def writeRegister(self, addr, d):
         """
         Public version of function for writing bytes from ADXL345
+
+        d should be a list
+        e.g. [byte0, byte1, byte2, ... , byte N]
         """
         self.__write_data(addr, d)
         
