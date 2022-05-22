@@ -56,7 +56,7 @@ CPOL = CPOL_HIGH
 CPHA = CPHA_TRAIL
 CPOL_SHIFT = 1
 
-WHO_AM_I_VAL = 0xE5
+ADXL345_WHO_AM_I_VAL = 0xE5
 
 MEASURE_MODE = 1
 MEASURE_SHIFT = 3
@@ -249,7 +249,7 @@ class ADXL345:
         """
         data = self.__read_data(WHO_AM_I, WHO_AM_I_DATA_SIZE)
         
-        return data
+        return data[0]
 
     def readRegister(self, addr, L):
         """
@@ -310,6 +310,6 @@ class ADXL345:
         result = X, Y, Z
 
         if not raw:
-            result = tuple([self.__calculate_result(TWOS_COMPLEMENT(ele)) for ele in result])
+            result = tuple([self.__calculate_result(c_int16(ele).value) for ele in result])
 
         return result
