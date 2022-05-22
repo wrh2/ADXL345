@@ -10,6 +10,7 @@ wrh2.github.io
 
 """
 
+from ctypes import c_int16
 import spidev
 import RPi.GPIO as GPIO
 
@@ -100,9 +101,9 @@ DATA_FORMAT_SIZE = 1
 def MAKE_INT16(x,y):
     return ((x << 8) | y)
 
-def TWOS_COMPLEMENT(x, bits=16):
-    mask = 2**(bits-1)
-    return -(x & mask) + (x & ~mask)
+# def TWOS_COMPLEMENT(x, bits=16):
+#     mask = 2**(bits-1)
+#     return -(x & mask) + (x & ~mask)
 
 class ADXL345:
 
@@ -272,7 +273,7 @@ class ADXL345:
         result = MAKE_INT16(data[1], data[0])
 
         if not raw:
-            result = self.__calculate_result(TWOS_COMPLEMENT(result))
+            result = self.__calculate_result(c_int16(result).value)
             
         return result
 
@@ -283,7 +284,7 @@ class ADXL345:
         result = MAKE_INT16(data[1], data[0])
 
         if not raw:
-            result = self.__calculate_result(TWOS_COMPLEMENT(result))
+            result = self.__calculate_result(c_int16(result).value)
             
         return result
 
@@ -294,7 +295,7 @@ class ADXL345:
         result = MAKE_INT16(data[1], data[0])
 
         if not raw:
-            result = self.__calculate_result(TWOS_COMPLEMENT(result))
+            result = self.__calculate_result(c_int16(result).value)
             
         return result
 

@@ -13,7 +13,6 @@ wrh2.github.io
 """
 
 from ADXL345 import *
-import numpy as np
 import time
 import sys
 
@@ -23,20 +22,17 @@ def main():
     my_imu = ADXL345()
 
     while 1:
-        
-        #print('XYZ: %s' % np.int16(my_imu.getXYZ()))
-        print('XYZ: %s' % list(my_imu.getXYZ(raw=False)))
 
-        time.sleep(.3)
+        try:
+            print('XYZ: %s' % list(my_imu.getXYZ(raw=False)))
+            time.sleep(1)
+
+        except KeyboardInterrupt:
+            sys.exit(0)
+            
+        except Exception as e:
+            print('Caught Exception %s' % e)
+            sys.exit(0)
 
 if __name__ == '__main__':
-    
-    try:
-        
-        main()
-        
-    except Exception as e:
-        
-        print('Caught Exception %s' % e)
-
-        sys.exit(0)
+    main()
