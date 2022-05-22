@@ -119,6 +119,7 @@ class ADXL345:
            self.__gpio_setup()
        
        self.__spi_setup()
+       self.__whoAmI = None
        self.__getWhoAmI()
        self.__configure_accelerometer(odr, scale)
 
