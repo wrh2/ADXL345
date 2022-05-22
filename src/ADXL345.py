@@ -120,6 +120,8 @@ class ADXL345:
        
        self.__spi_setup()
 
+        self.__getWhoAmI()
+
        self.__configure_accelerometer(odr, scale)
 
     def __exit__(self):
@@ -242,14 +244,14 @@ class ADXL345:
 
         return result
 
-    def whoAmI(self):
+    def __getWhoAmI(self):
         """
         This function reads the WHO_AM_I register
         and returns the data to the user
         """
         data = self.__read_data(WHO_AM_I, WHO_AM_I_DATA_SIZE)
-        
-        return data[0]
+
+        self.__whoAmI = data[0]
 
     def readRegister(self, addr, L):
         """
@@ -313,3 +315,7 @@ class ADXL345:
             result = tuple([self.__calculate_result(c_int16(ele).value) for ele in result])
 
         return result
+
+    @property
+    def whoAmI(self):
+        return self.__whoAmI
