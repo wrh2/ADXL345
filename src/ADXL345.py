@@ -151,7 +151,7 @@ class ADXL345:
             self.__measurement_off()
             self.__spi.close()
 
-    def __exit__(self):
+    def __del__(self):
         self.__power_down()
         if self.__software_cs:
             GPIO.cleanup()
@@ -225,29 +225,16 @@ class ADXL345:
     def __measurement_on(self):
 
         POWER_CTL = self.regs['POWER_CTL']
-        POWER_CTL_DATA_SIZE = 1
-
-        reg_data = self.__read_data(POWER_CTL, POWER_CTL_DATA_SIZE)[0]
+        #POWER_CTL_DATA_SIZE = 1
 
         MEASURE_MODE = 1
         MEASURE_SHIFT = 3
 
-        reg_data |= (MEASURE_MODE << MEASURE_SHIFT)
-
-        self.__write_data(POWER_CTL, [reg_data])
+        self.__write_data(POWER_CTL, [(MEASURE_MODE << MEASURE_SHIFT)])
 
     def __measurement_off(self):
 
         POWER_CTL = self.regs['POWER_CTL']
-        # POWER_CTL_DATA_SIZE = 1
-
-        # reg_data = self.__read_data(POWER_CTL, POWER_CTL_DATA_SIZE)[0]
-
-        # MEASURE_MODE = 1
-        # MEASURE_SHIFT = 3
-        
-        # reg_data &= ~(MEASURE_MODE << MEASURE_SHIFT)
-
         self.__write_data(POWER_CTL, [0])
 
     def __multibyte(self, d):
