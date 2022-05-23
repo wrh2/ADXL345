@@ -47,10 +47,21 @@ ADXL345_ACC_SCALE_4G = 1
 ADXL345_ACC_SCALE_8G = 2
 ADXL345_ACC_SCALE_16G = 3
 
-ADXL345_ACC_SENSITIVITY_2G = 3.9 * 1e-3 * 9.81 # mg/LSB
-ADXL345_ACC_SENSITIVITY_4G = 7.8 * 1e-3 * 9.81
-ADXL345_ACC_SENSITIVITY_8G = 15.6 * 1e-3 * 9.81
-ADXL345_ACC_SENSITIVITY_16G = 31.2 * 1e-3 * 9.81
+ADXL345_ACC_SENSITIVITY_2G_MIN = 3.5 * 1e-3 * 9.81 # mg/LSB
+ADXL345_ACC_SENSITIVITY_2G_TYP = 3.9 * 1e-3 * 9.81
+ADXL345_ACC_SENSITIVITY_2G_MAX = 4.3 * 1e-3 * 9.81
+
+ADXL345_ACC_SENSITIVITY_4G_MIN = 7.1 * 1e-3 * 9.81 # mg/LSB
+ADXL345_ACC_SENSITIVITY_4G_TYP = 7.8 * 1e-3 * 9.81
+ADXL345_ACC_SENSITIVITY_4G_MAX = 8.7 * 1e-3 * 9.81
+
+ADXL345_ACC_SENSITIVITY_8G_MIN = 14.1 * 1e-3 * 9.81 # mg/LSB
+ADXL345_ACC_SENSITIVITY_8G_TYP = 15.6 * 1e-3 * 9.81
+ADXL345_ACC_SENSITIVITY_8G_MAX = 17.5 * 1e-3 * 9.81
+
+ADXL345_ACC_SENSITIVITY_16G_MIN = 28.6 * 1e-3 * 9.81 # mg/LSB
+ADXL345_ACC_SENSITIVITY_16G_TYP = 31.2 * 1e-3 * 9.81
+ADXL345_ACC_SENSITIVITY_16G_MAX = 34.5 * 1e-3 * 9.81
 
 ADXL345_OUTPUT_DATA_RATE_0_10HZ = 0x0
 ADXL345_OUTPUT_DATA_RATE_0_20HZ = 0x1
@@ -69,7 +80,7 @@ ADXL345_OUTPUT_DATA_RATE_800HZ = 0xD
 ADXL345_OUTPUT_DATA_RATE_1600HZ = 0xE
 ADXL345_OUTPUT_DATA_RATE_3200HZ = 0xF
 
-ADXL345_DEFAULT_SENSITIVITY = ADXL345_ACC_SENSITIVITY_2G
+ADXL345_DEFAULT_SENSITIVITY = ADXL345_ACC_SENSITIVITY_2G_TYP
 ADXL345_DEFAULT_SCALE = ADXL345_ACC_SCALE_2G
 ADXL345_DEFAULT_ODR = ADXL345_OUTPUT_DATA_RATE_100HZ
 
@@ -91,7 +102,7 @@ class ADXL345:
        
        self.__bitrate = bitrate
        self.__spi_setup()
-       
+
        self.__setupRegisterMap()
 
        self.__whoAmI = None
@@ -149,7 +160,7 @@ class ADXL345:
             # according to ADXL345 datasheet
             # in full resolution mode the sensitivity
             # is always 3.9mg/LSB
-            self.__sensitivity = ADXL345_ACC_SENSITIVITY_2G
+            self.__sensitivity = ADXL345_ACC_SENSITIVITY_2G_TYP
 
         else:
 
@@ -271,15 +282,7 @@ class ADXL345:
 
     def __calculate_result(self, x):
 
-        result = None
-
-        if self.__full_resolution:
-
-            result = self.__sensitivity * x
-
-        else:
-
-            result = self.__sensitivity * self.__scale * x
+        result = self.__sensitivity * x
 
         return result
 
