@@ -239,16 +239,16 @@ class ADXL345:
     def __measurement_off(self):
 
         POWER_CTL = self.regs['POWER_CTL']
-        POWER_CTL_DATA_SIZE = 1
+        # POWER_CTL_DATA_SIZE = 1
 
-        reg_data = self.__read_data(POWER_CTL, POWER_CTL_DATA_SIZE)[0]
+        # reg_data = self.__read_data(POWER_CTL, POWER_CTL_DATA_SIZE)[0]
 
-        MEASURE_MODE = 1
-        MEASURE_SHIFT = 3
+        # MEASURE_MODE = 1
+        # MEASURE_SHIFT = 3
         
-        reg_data &= ~(MEASURE_MODE << MEASURE_SHIFT)
+        # reg_data &= ~(MEASURE_MODE << MEASURE_SHIFT)
 
-        self.__write_data(POWER_CTL, [reg_data])
+        self.__write_data(POWER_CTL, [0])
 
     def __multibyte(self, d):
         # determines if we are reading/writing multiple bytes
