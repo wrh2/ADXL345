@@ -90,25 +90,24 @@ def MAKE_INT16(x,y):
 class ADXL345:
 
     def __init__(self, sensitivity=ADXL345_DEFAULT_SENSITIVITY, scale=ADXL345_DEFAULT_SCALE, odr=ADXL345_DEFAULT_ODR, full_resolution=True, software_cs=False, bitrate=ADXL345_DEFAULT_SPI_BITRATE):
-        
-       # sets up private constants
-       self.__constants(sensitivity, scale, full_resolution, software_cs)
+        # sets up private constants
+        self.__constants(sensitivity, scale, full_resolution, software_cs)
 
-       if self.__software_cs:
+        if self.__software_cs:
 
-           # software is controlling chip select
-           # set up gpio to do this
-           self.__gpio_setup()
-       
-       self.__bitrate = bitrate
-       self.__spi_setup()
+            # software is controlling chip select
+            # set up gpio to do this
+            self.__gpio_setup()
 
-       self.__setupRegisterMap()
+        self.__bitrate = bitrate
+        self.__spi_setup()
 
-       self.__whoAmI = None
-       self.__getWhoAmI()
+        self.__setupRegisterMap()
 
-       self.__configure_accelerometer(odr, scale)
+        self.__whoAmI = None
+        self.__getWhoAmI()
+
+        self.__configure_accelerometer(odr, scale)
 
     def __setupRegisterMap(self):
 
@@ -172,7 +171,7 @@ class ADXL345:
             self.__sensitivity = sensitivity
             
         self.__scale = (1 << scale)
-        
+
         self.__software_cs = software_cs
         
     def __gpio_setup(self):
