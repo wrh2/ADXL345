@@ -2,6 +2,10 @@
 
 A simple python module for controlling an ADXL345 via SPI with a raspberry pi 3.
 
+[Polling example](./examples/example_poll.py)
+
+For help on how to use, check the [wiki](https://github.com/wrh2/ADXL345/wiki)
+
 ## Dependencies
 
 [spidev](https://pypi.org/project/spidev/)
@@ -14,7 +18,7 @@ A simple python module for controlling an ADXL345 via SPI with a raspberry pi 3.
     * Can be controlled by the module via a GPIO or by the SPI peripheral
 * Supports 2g, 4g, 8g, 16g scales
 * Supports raw output or calculated output
-* Provides interface for directly reading/writing registers on the ADXL345
+* [Provides interface for directly reading/writing registers on the ADXL345](https://github.com/wrh2/ADXL345/wiki#going-beyond)
 
 ## About
 
@@ -26,7 +30,7 @@ The code was written for and tested on a raspberry pi 3 with Python 2.7 and Pyth
 
 ## Tests
 
-A unit test framework for the module using python's unittest module is included in the tests folder.
+A unit test framework for the module using python's unittest module is [included](./tests/tests.py).
 
 ## TODO
 
