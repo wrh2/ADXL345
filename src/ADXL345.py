@@ -89,11 +89,15 @@ class ADXL345:
            # set up gpio to do this
            self.__gpio_setup()
        
+       self.__bitrate = bitrate
        self.__spi_setup()
+       
+       self.__setupRegisterMap()
+
        self.__whoAmI = None
        self.__getWhoAmI()
+
        self.__configure_accelerometer(odr, scale)
-       self.__bitrate = bitrate
 
     def __setupRegisterMap(self):
 
