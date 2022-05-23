@@ -159,16 +159,16 @@ class ADXL345:
 
         self.__full_resolution = full_resolution
 
-        if self.__full_resolution:
+        # if self.__full_resolution:
+    
+        #     # according to ADXL345 datasheet
+        #     # in full resolution mode the sensitivity
+        #     # is always 3.9mg/LSB
+        #     self.__sensitivity = ADXL345_ACC_SENSITIVITY_2G_TYP
 
-            # according to ADXL345 datasheet
-            # in full resolution mode the sensitivity
-            # is always 3.9mg/LSB
-            self.__sensitivity = ADXL345_ACC_SENSITIVITY_2G_TYP
+        # else:
 
-        else:
-
-            self.__sensitivity = sensitivity
+        self.__sensitivity = sensitivity
             
         self.__scale = (1 << scale)
 
