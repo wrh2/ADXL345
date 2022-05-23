@@ -146,8 +146,13 @@ class ADXL345:
             'FIFO_STATUS': 0x39,
         }
 
+    def __power_down(self):
+        if self.__spi:
+            self.__measurement_off()
+            self.__spi.close()
 
     def __exit__(self):
+        self.__power_down()
         if self.__software_cs:
             GPIO.cleanup()
 
@@ -206,7 +211,7 @@ class ADXL345:
         # this actually turns the sensor on,
         # after this measurements become available
         # in the data registers
-        self.__measurement_setup()
+        self.__measurement_on()
 
     def __odr_setup(self, odr):
         BW_RATE = self.regs['BW_RATE']
@@ -217,11 +222,33 @@ class ADXL345:
         DATA_FORMAT = self.regs['DATA_FORMAT']
         self.__write_data(DATA_FORMAT, [(self.__full_resolution << FULL_RES_SHIFT) | scale])
 
-    def __measurement_setup(self):
+    def __measurement_on(self):
+
+        POWER_CTL = self.regs['POWER_CTL']
+        POWER_CTL_DATA_SIZE = 1
+
+        reg_data = self.__read_data(POWER_CTL, POWER_CTL_DATA_SIZE)[0]
+
         MEASURE_MODE = 1
         MEASURE_SHIFT = 3
+
+        reg_data |= (MEASURE_MODE << MEASURE_SHIFT)
+
+        self.__write_data(POWER_CTL, [reg_data])
+
+    def __measurement_off(self):
+
         POWER_CTL = self.regs['POWER_CTL']
-        self.__write_data(POWER_CTL, [(MEASURE_MODE << MEASURE_SHIFT)])
+        POWER_CTL_DATA_SIZE = 1
+
+        reg_data = self.__read_data(POWER_CTL, POWER_CTL_DATA_SIZE)[0]
+
+        MEASURE_MODE = 1
+        MEASURE_SHIFT = 3
+        
+        reg_data &= ~(MEASURE_MODE << MEASURE_SHIFT)
+
+        self.__write_data(POWER_CTL, [reg_data])
 
     def __multibyte(self, d):
         # determines if we are reading/writing multiple bytes
