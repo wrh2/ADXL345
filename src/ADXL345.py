@@ -326,7 +326,7 @@ class ADXL345:
         """
         self.__write_data(addr, d)
         
-    def getX(self, raw=True):
+    def getX(self, raw=False):
         
         X_DATA_SIZE = 2
         DATAX0 = self.regs['DATAX0']
@@ -340,7 +340,7 @@ class ADXL345:
             
         return result
 
-    def getY(self, raw=True):
+    def getY(self, raw=False):
 
         Y_DATA_SIZE = 2
         DATAY0 = self.regs['DATAY0']
@@ -354,7 +354,7 @@ class ADXL345:
             
         return result
 
-    def getZ(self, raw=True):
+    def getZ(self, raw=False):
 
         Z_DATA_SIZE = 2
         DATAZ0 = self.regs['DATAZ0']
@@ -368,7 +368,7 @@ class ADXL345:
             
         return result
 
-    def getXYZ(self, raw=True):
+    def getXYZ(self, raw=False):
 
         XYZ_DATA_SIZE = 6
         DATAX0 = self.regs['DATAX0']
