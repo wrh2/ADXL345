@@ -147,6 +147,7 @@ class ADXL345:
 
     def __power_down(self):
         if self.__spi:
+            self.__disable_data_ready_interrupt()
             self.__measurement_off()
             self.__spi.close()
 
@@ -222,6 +223,11 @@ class ADXL345:
             DATA_READY_INTERRUPT_ENABLE = int(int_en) << DATA_READY_SHIFT
             self.__write_data(INT_ENABLE, [DATA_READY_INTERRUPT_ENABLE])
 
+    def __disable_data_ready_interrupt(self):
+        INT_ENABLE = self.regs['INT_ENABLE']
+        self.__write_data(INT_ENABLE, [0])
+
+
     def __odr_setup(self, odr):
         BW_RATE = self.regs['BW_RATE']
         self.__write_data(BW_RATE, [odr])
@@ -232,7 +238,6 @@ class ADXL345:
         self.__write_data(DATA_FORMAT, [(self.__full_resolution << FULL_RES_SHIFT) | scale])
 
     def __measurement_on(self):
-
         POWER_CTL = self.regs['POWER_CTL']
         #POWER_CTL_DATA_SIZE = 1
 
