@@ -25,7 +25,7 @@ def gpio_setup():
     # GPIO setup on raspberry pi for data ready interrupts
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.add_event_detect(26, GPIO.RISING, callback=my_callback)
+    GPIO.add_event_detect(17, GPIO.RISING, callback=my_callback)
 
 def main():
     global my_imu
