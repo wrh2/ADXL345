@@ -15,7 +15,7 @@ def my_callback(channel):
     try:
         # logic is active high
         if GPIO.input(channel):
-            print('Accelerometer data [X, Y, Z]: %s' % my_imu.getXYZ(raw=False)) # for raw data, imu.getAccData(raw=True)
+            print('Accelerometer data [X, Y, Z]: {0}'.format(my_imu.getXYZ())) # for raw data, imu.getAccData(raw=True)
     except Exception as e:
             print('Caught exception %s' % e)
             GPIO.cleanup()
