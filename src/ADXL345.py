@@ -89,7 +89,7 @@ def MAKE_INT16(x,y):
 
 class ADXL345:
 
-    def __init__(self, sensitivity=ADXL345_DEFAULT_SENSITIVITY, scale=ADXL345_DEFAULT_SCALE, odr=ADXL345_DEFAULT_ODR, full_resolution=True, software_cs=False, bitrate=ADXL345_DEFAULT_SPI_BITRATE):
+    def __init__(self, sensitivity=ADXL345_DEFAULT_SENSITIVITY, scale=ADXL345_DEFAULT_SCALE, odr=ADXL345_DEFAULT_ODR, full_resolution=True, software_cs=False, bitrate=ADXL345_DEFAULT_SPI_BITRATE, interrupt_enable=False):
         # sets up private constants
         self.__constants(sensitivity, scale, full_resolution, software_cs)
 
@@ -107,7 +107,7 @@ class ADXL345:
         self.__whoAmI = None
         self.__getWhoAmI()
 
-        self.__configure_accelerometer(odr, scale)
+        self.__configure_accelerometer(odr, scale, interrupt_enable)
 
     def __setupRegisterMap(self):
 
@@ -199,7 +199,10 @@ class ADXL345:
         self.__spi.open(SPI_BUS, SPI_DEVICE)
         self.__spi.mode = (CPOL << CPOL_SHIFT) | CPHA
 
-    def __configure_accelerometer(self, odr, scale):
+    def __configure_accelerometer(self, odr, scale, int_en):
+
+        # per datasheet, enable interrupt before output
+        self.__enable_data_ready_interrupt(int_en)
 
         # output data rate
         self.__odr_setup(odr)
@@ -211,6 +214,13 @@ class ADXL345:
         # after this measurements become available
         # in the data registers
         self.__measurement_on()
+
+    def __enable_data_ready_interrupt(self, int_en):
+        if int_en:
+            INT_ENABLE = self.regs['INT_ENABLE']
+            DATA_READY_SHIFT = 7
+            DATA_READY_INTERRUPT_ENABLE = int(int_en) << DATA_READY_SHIFT
+            self.__write_data(INT_ENABLE, [DATA_READY_INTERRUPT_ENABLE])
 
     def __odr_setup(self, odr):
         BW_RATE = self.regs['BW_RATE']
@@ -232,7 +242,6 @@ class ADXL345:
         self.__write_data(POWER_CTL, [(MEASURE_MODE << MEASURE_SHIFT)])
 
     def __measurement_off(self):
-
         POWER_CTL = self.regs['POWER_CTL']
         self.__write_data(POWER_CTL, [0])
 
